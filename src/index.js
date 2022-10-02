@@ -8,7 +8,9 @@ import {
   doc,
   onSnapshot,
   query,
-  where
+  where,
+  orderBy,
+  serverTimestamp
 } from 'firebase/firestore';
 
 const firebaseConfig = {
@@ -30,7 +32,7 @@ const db = getFirestore();
 const colRef = collection(db, 'books');
 
 // queries
-const q = query(colRef, where('author', '==', 'aditya patel'));
+const q = query(colRef, orderBy('createdAt'));
 
 // get collection data
 // getDocs(colRef)
@@ -61,7 +63,8 @@ addBookForm.addEventListener('submit', (e) => {
 
   addDoc(colRef, {
     title: addBookForm.title.value,
-    author: addBookForm.author.value
+    author: addBookForm.author.value,
+    createdAt: serverTimestamp()
   }).then(() => {
     addBookForm.reset();
   });
